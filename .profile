@@ -41,4 +41,5 @@ alias lm='ll | more'
 
 # Shortcut to building.ai project directory
 alias ba='cd $HOME/Projects/building.ai'
+alias ap='cd $HOME/Projects/apollo'
 alias www='cd $HOME/Projects/www'
