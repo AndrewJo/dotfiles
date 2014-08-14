@@ -36,9 +36,32 @@ function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/"
 }
 
+function l_bracket {
+  [[ "$(git branch --no-color 2> /dev/null)" != "" ]] && echo "<"
+}
+
+function r_bracket {
+  [[ "$(git branch --no-color 2> /dev/null)" != "" ]] && echo ">"
+}
+
+# Chomp long directory path
+function dir_chomp () {
+  local IFS=/ c=1 n d
+  local p=(${1/#$HOME/\~}) r=${p[*]}
+  local s=${#r}
+  while ((s>$2&&c<${#p[*]}-1))
+  do
+    d=${p[c]}
+    n=1;[[ $d = .* ]]&&n=2
+    ((s-=${#d}-n))
+    p[c++]=${d:0:n}
+  done
+  echo "${p[*]}"
+}
+
 # Function to set the display prompt (to get around line wrap issues in bash for color prompts)
 function set_prompt {
-  PS1='\[${GREEN}${BOLD}\]\u@\h\[${RESET}\]:\[${BLUE}${BOLD}\]\w\[${RESET}\]<\[$(parse_git_dirty)\]$(parse_git_branch)\[${RESET}\]>\$ '
+  PS1='\[${GREEN}${BOLD}\]\u@\h\[${RESET}\]:\[${BLUE}${BOLD}\]$(dir_chomp "$(pwd)" 20)\[${RESET}\]$(l_bracket)\[$(parse_git_dirty)\]$(parse_git_branch)\[${RESET}\]$(r_bracket)\$ '
 }
 
 PROMPT_COMMAND=set_prompt
