@@ -4,11 +4,10 @@
 
 # PATH Configuration
 PATH=$PATH:$HOME/bin
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages
+export PYTHONPATH=$HOME/miniconda/lib/python2.7/site-packages:/usr/local/lib/python2.7/site-packages
 
 # Default Editor
-export EDITOR="atom"
+export EDITOR="code"
 
 ################################################################################
 # Prompt Configurations
@@ -22,7 +21,7 @@ RESET=$(tput sgr0)
 
 # Function to parse git status
 function parse_git_dirty {
-  if [ "$(git status 2> /dev/null | tail -n1)" != "nothing to commit, working directory clean" ] ; then
+  if [ "$(git status 2> /dev/null | tail -n1)" != "nothing to commit, working tree clean" ] ; then
     tput setaf 1
     tput bold
   else
@@ -69,7 +68,8 @@ PROMPT_COMMAND=set_prompt
 ################################################################################
 # Command Aliases
 ################################################################################
-alias ls='ls -h'
+alias ls='gls -h --color'
+#alias ls='ls -G'
 alias ll='ls -lv --group-directories-first'
 alias la='ll -A'
 alias lm='ll | more'
@@ -78,7 +78,10 @@ alias lm='ll | more'
 alias ba='cd $HOME/Projects/building.ai'
 alias ap='cd $HOME/Projects/apollo'
 alias www='cd $HOME/Projects/www'
+alias capcom='cd $HOME/Projects/capcom'
 
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+export DATABASE_URL_PREFIX="postgres://andrewjo@localhost:5432"
+export DEV_DATABASE_URL="$DATABASE_URL_PREFIX/verdigris_app_dev"
+export TEST_DATABASE_URL="$DATABASE_URL_PREFIX/verdigris_app_test"
